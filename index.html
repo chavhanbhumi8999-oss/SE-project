@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Project Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ====== SIDEBAR ====== -->
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">Pro<span>jects</span></div>
+      <button class="sidebar-close" id="sidebarClose">✕</button>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-label">Browse</div>
+      <button class="nav-item active" data-filter="all">
+        <span class="nav-icon">⊞</span> All Projects
+      </button>
+      <button class="nav-item" data-filter="Web Dev">
+        <span class="nav-icon">🌐</span> Web Dev
+      </button>
+      <button class="nav-item" data-filter="AI / ML">
+        <span class="nav-icon">🤖</span> AI / ML
+      </button>
+      <button class="nav-item" data-filter="Mobile App">
+        <span class="nav-icon">📱</span> Mobile App
+      </button>
+      <button class="nav-item" data-filter="Design">
+        <span class="nav-icon">🎨</span> Design
+      </button>
+      <button class="nav-item" data-filter="Data Science">
+        <span class="nav-icon">📊</span> Data Science
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="nav-item" id="addProjectBtn">
+        <span class="nav-icon">＋</span> Add Project
+      </button>
+      <button class="nav-item" id="exportBtn">
+        <span class="nav-icon">↓</span> Export CSV
+      </button>
+    </div>
+  </aside>
+
+  <!-- ====== MAIN CONTENT ====== -->
+  <div class="main-area">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" id="hamburger">☰</button>
+        <div class="topbar-title">Student Showcase</div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search projects or students..." class="search-input"/>
+        </div>
+        <div class="view-toggle">
+          <button class="vbtn active" id="gridViewBtn" title="Grid view">⊞</button>
+          <button class="vbtn" id="listViewBtn" title="List view">☰</button>
+        </div>
+        <button class="add-btn" id="addProjectBtnTop">＋ Add</button>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <section class="stats-row" id="statsRow"></section>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <div class="chips" id="chipContainer"></div>
+      <select id="sortSelect" class="sort-select">
+        <option value="name">Sort: Name</option>
+        <option value="student">Sort: Student</option>
+        <option value="views">Sort: Views</option>
+        <option value="newest">Sort: Newest</option>
+      </select>
+    </div>
+
+    <!-- Project Grid / List -->
+    <main class="project-area" id="projectArea">
+      <div class="project-grid" id="projectGrid"></div>
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="empty-icon">🔭</div>
+        <p>No projects found.</p>
+        <small>Try a different search or add a new project.</small>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ====== MODAL: Add / Edit Project ====== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Add New Project</h2>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Project Name *</label>
+          <input type="text" id="fName" placeholder="e.g. ShopEasy E-Commerce"/>
+        </div>
+        <div class="form-group">
+          <label>Student Name *</label>
+          <input type="text" id="fStudent" placeholder="e.g. Rahul Sharma"/>
+        </div>
+        <div class="form-group">
+          <label>Roll Number</label>
+          <input type="text" id="fRoll" placeholder="e.g. 01"/>
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="fCategory">
+            <option value="">Select category</option>
+            <option>Web Dev</option>
+            <option>AI / ML</option>
+            <option>Mobile App</option>
+            <option>Design</option>
+            <option>Data Science</option>
+            <option>Blockchain</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Project Description</label>
+          <textarea id="fDesc" rows="2" placeholder="Brief description of the project..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Live Site URL</label>
+          <input type="url" id="fUrl" placeholder="https://yourproject.netlify.app"/>
+        </div>
+        <div class="form-group full">
+          <label>GitHub / Source URL</label>
+          <input type="url" id="fGithub" placeholder="https://github.com/username/repo"/>
+        </div>
+        <div class="form-group">
+          <label>Tech Stack (comma separated)</label>
+          <input type="text" id="fTech" placeholder="React, Node.js, MongoDB"/>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="fStatus">
+            <option value="Live">Live</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Emoji / Icon</label>
+          <input type="text" id="fEmoji" placeholder="🚀" maxlength="4"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="cancelBtn">Cancel</button>
+      <button class="btn-save" id="saveBtn">Save Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== PROJECT DETAIL MODAL ====== -->
+<div class="modal-overlay" id="detailOverlay">
+  <div class="modal detail-modal">
+    <div class="modal-header">
+      <h2 id="detailTitle">Project Details</h2>
+      <button class="modal-close" id="detailClose">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="detailEditBtn">✏️ Edit</button>
+      <button class="btn-danger" id="detailDeleteBtn">🗑️ Delete</button>
+      <a class="btn-save" id="detailOpenLink" href="#" target="_blank">Open Site ↗</a>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
